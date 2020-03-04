@@ -1,5 +1,9 @@
 # SGM Totem
 
+```pre
+teste
+```
+
 | PROTOCOL | ROUTE        | DESC                                                                                      |
 | -------- | ------------ | ----------------------------------------------------------------------------------------- |
 | POST     | /ServRotinas | Todas as requisições vão ocorrer neste `Servlet` mudando somente os parametros utilizados |
@@ -176,6 +180,35 @@ type result = PeriodoAtivo[];
 
 ## Requisição HTTP
 
+#### getRecepcoes
+
+[Informações do retorno](#getrecepcoes)
+
 ```http
 POST /AutoAtendimento/ServRotinas?classe=autoatendimento.backingbean.RecepcoesBacking&operacao=backing_bean&metodo=getRecepcoes&parametros=%7B%7D
+Content-Type: application/json; charset=utf-8
+
+{ ... } # retorno 
+```
+
+#### getRecepcoesBotoes
+
+[Informações do retorno](#getrecepcoesbotoes)
+
+```http
+POST /AutoAtendimento/ServRotinas?classe=autoatendimento.backingbean.RecepcoesBacking&operacao=backing_bean&metodo=getRecepcoesBotoes&parametros=%7B%7D
+Content-Type: application/json; charset=utf-8
+
+{ ... } # retorno 
+```
+
+#### getPeriodosAtivos
+
+[Informações do retorno](#getperiodosativos)
+
+```http
+POST /AutoAtendimento/ServRotinas?classe=autoatendimento.backingbean.RecepcoesBacking&operacao=backing_bean&metodo=getPeriodosAtivos&parametros=%7B%7D
+Content-Type: application/json; charset=utf-8
+
+{ ... } # retorno 
 ```
