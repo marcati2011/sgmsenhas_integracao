@@ -1,9 +1,5 @@
 # SGM Totem
 
-```pre
-teste
-```
-
 | PROTOCOL | ROUTE        | DESC                                                                                      |
 | -------- | ------------ | ----------------------------------------------------------------------------------------- |
 | POST     | /ServRotinas | Todas as requisições vão ocorrer neste `Servlet` mudando somente os parametros utilizados |
