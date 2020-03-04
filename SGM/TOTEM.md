@@ -4,6 +4,12 @@
 | -------- | ------------ | ----------------------------------------------------------------------------------------- |
 | POST     | /ServRotinas | Todas as requisições vão ocorrer neste `Servlet` mudando somente os parametros utilizados |
 
+## Tópicos
+
+- [Query parameters](#query-parameters)
+- [Retornos por método](#retornos-por-método)
+- [Requisição HTTP](#requisição-http)
+
 ## Query parameters
 
 A requisição recebe 4 `query parameters`:
