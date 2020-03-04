@@ -1,8 +1,9 @@
 # SGM Totem
 
-| PROTOCOL | ROUTE        | DESC                                                                                      |
-| -------- | ------------ | ----------------------------------------------------------------------------------------- |
-| POST     | /ServRotinas | Todas as requisições vão ocorrer neste `Servlet` mudando somente os parametros utilizados |
+| PROTOCOL | ROUTE         | DESC                                                                                      |
+| -------- | ------------- | ----------------------------------------------------------------------------------------- |
+| POST     | /ServRotinas  | Todas as requisições para pegar os dados irão ocorrer neste `Servlet` mudando somente os parametros utilizados |
+| POST     | /SrvlRecepcao | Emissão do ticket                                                                         |
 
 ## Tópicos
 
@@ -31,7 +32,7 @@ A requisição recebe 4 `query parameters`:
 
 #### getRecepcoes
 
-> ATENÇÃO: O retorno não é sofre um parse, então todos os campos retornam como string.
+> ATENÇÃO: O retorno não sofrem um parse, então todos os campos retornam como string.
 
 | KEY               | VALUES                                                                                       | DESC                                                                      |
 | ----------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -86,7 +87,7 @@ type result = Recepcao[];
 
 #### getRecepcoesBotoes
 
-> ATENÇÃO: O retorno não é sofre um parse, então todos os campos retornam como string.
+> ATENÇÃO: O retorno não sofrem um parse, então todos os campos retornam como string.
 
 | KEY                     | VALUES          | DESC                                                                            |
 | ----------------------- | --------------- | ------------------------------------------------------------------------------- |
@@ -148,7 +149,7 @@ type result = RecepcoesBotoes[];
 
 #### getPeriodosAtivos
 
-> ATENÇÃO: O retorno não é sofre um parse, então todos os campos retornam como string.
+> ATENÇÃO: O retorno não sofrem um parse, então todos os campos retornam como string.
 
 Cada botão pode conter varios periodos cadastrados.
 
@@ -174,9 +175,9 @@ interface PeriodoAtivo {
 type result = PeriodoAtivo[];
 ```
 
-## Requisição HTTP
+## Requisição HTTP para coletar os dados
 
-#### getRecepcoes
+#### Método getRecepcoes
 
 [Informações do retorno](#getrecepcoes)
 
@@ -184,10 +185,10 @@ type result = PeriodoAtivo[];
 POST /AutoAtendimento/ServRotinas?classe=autoatendimento.backingbean.RecepcoesBacking&operacao=backing_bean&metodo=getRecepcoes&parametros=%7B%7D
 Content-Type: application/json; charset=utf-8
 
-{ ... } # retorno 
+{ ... } # retorno
 ```
 
-#### getRecepcoesBotoes
+#### Método getRecepcoesBotoes
 
 [Informações do retorno](#getrecepcoesbotoes)
 
@@ -195,10 +196,10 @@ Content-Type: application/json; charset=utf-8
 POST /AutoAtendimento/ServRotinas?classe=autoatendimento.backingbean.RecepcoesBacking&operacao=backing_bean&metodo=getRecepcoesBotoes&parametros=%7B%7D
 Content-Type: application/json; charset=utf-8
 
-{ ... } # retorno 
+{ ... } # retorno
 ```
 
-#### getPeriodosAtivos
+#### Método getPeriodosAtivos
 
 [Informações do retorno](#getperiodosativos)
 
@@ -206,5 +207,40 @@ Content-Type: application/json; charset=utf-8
 POST /AutoAtendimento/ServRotinas?classe=autoatendimento.backingbean.RecepcoesBacking&operacao=backing_bean&metodo=getPeriodosAtivos&parametros=%7B%7D
 Content-Type: application/json; charset=utf-8
 
-{ ... } # retorno 
+{ ... } # retorno
+```
+
+## Requisição HTTP de impressão
+
+| KEY                         | REQUIRED | VALUES       | DESC                                                       |
+| --------------------------- | -------- | ------------ | ---------------------------------------------------------- |
+| complemento                 | false    | string       | Informação que vai ser atrelado ao ticket no sistema       |
+| idAgenda                    | false    | number       | ID do agendamento                                          |
+| idClassificacao             | false    | number       | codigoServico do botão da recepção do tipo 'CLASSIFICACAO' |
+| idDestinoRedirecionamento   | false    | number       | codigoServico do botão da recepção do tipo 'GRUPO_GUICHES' |
+| idEspera                    | true     | number       | codigoServico do botão                                     |
+| idRecepcao                  | true     | number       | ID do registro da recepção                                 |
+| operacao                    | true     | nova_senha   |                                                            |
+| redirecionar                | false    | boolean      | Senha gerada já sendo redirecionada                        |
+| tipoDestinoRedirecionamento | false    | 3            | Deve ser o valor 3                                         |
+
+```ts
+interface PrintObject {
+  complemento?: string;
+  idAgenda?: number;
+  idClassificacao?: number;
+  idDestinoRedirecionamento?: number;
+  idEspera: number;
+  idRecepcao: number;
+  operacao: "nova_senha";
+  redirecionar?: boolean;
+  tipoDestinoRedirecionamento?: 3;
+}
+```
+
+```http
+POST /AutoAtendimento/SrvlRecepcao?operacao=nova_senha&idEspera=1&idRecepcao=1
+Content-Type: application/json; charset=utf-8
+
+{ ... } # retorno
 ```
