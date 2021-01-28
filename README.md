@@ -56,4 +56,4 @@ type ServSessaoResult = [ServSessaoUser, ServSessaoToken]
 
 - [Totem](SGM/TOTEM.md)
 - [Chamada](SGM/CHAMADA.md)
-```
+
