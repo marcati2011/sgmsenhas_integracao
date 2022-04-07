@@ -1,38 +1,51 @@
 # SGM Controle
 
-| PROTOCOL | ROUTE                  | DESC                                                                                                           |
-| -------- | ---------------------- | -------------------------------------------------------------------------------------------------------------- |
-| POST     | /SrvImpressoraIpRemota | Todas as requisições para pegar os dados irão ocorrer neste `Servlet` mudando somente os parametros utilizados |
+| PROTOCOL | ROUTE        | DESC                                                                          |
+| -------- | ------------ | ----------------------------------------------------------------------------- |
+| POST     | /ServRotinas | Todas as requisições serão `Servlet` mudando somente os parametros utilizados |
 
-## Request
+# Parametros
 
-O query params `parametros` passado, é um json com a seguinte estrutura:
+Toda a requisição opera por parametros na url e para o acesso ao controle contem a seguinte estrutura.
 
-```ts
-interface Parametros {
-  // id do registro do ponto de chamada que referencia o ponto de atendimento
-  idImpressora: number;
-  // veja na tabela a baixo
-  idBotao: 1 | 2 | 3;
-  operacao: "CHAMA_SENHA";
-  idLoja: 1;
-}
-```
+| Chave      | Valor                   | Descrição                                                                                      |
+| ---------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
+| token      | -                       | o token adquirido ao realizar a autenticação como mostrado na [sessão inicial](../README.md) . |
+| operacao   | backing_bean            | -                                                                                              |
+| classe     | sgm.server.api.Controle | -                                                                                              |
+| metodo     | -                       | [confira logo a baixo](#metodos)                                                               |
+| parametros | -                       | [confira logo a baixo](#parametros)                                                            |
 
-### Tabela de botões
+Cada método possui seus próprios parametros em formato `json`.
 
-| Ação           | idBotao |
-| -------------- | ------- |
-| Próxima senha  | 1       |
-| Repetir senha  | 2       |
-| Ausentar senha | 3       |
-| -              | -       |
+## Métodos
 
-### Exemplo de requisição `http`
+Os métodos são as operações dentro do `endpoint` que podem ser utilizados, todos eles recebem parametros especificos.
+
+| Método     | Descrição                                                         |
+| ---------- | ----------------------------------------------------------------- |
+| getGuiches | Retorna um `array` com os dados dos guichês disponiveis na sessão |
+| proximo    | para chamar a próxima senha pelo controle                         |
+
+#### getGuiches
 
 ```http
-POST /AutoAtendimento/SrvImpressoraIpRemota?parametros={"idImpressora":1,"idBotao":1,"operacao":"CHAMA_SENHA","idLoja":1}
+POST /AutoAtendimento/ServRotinas?operacao=backing_bean&classe=sgm.server.api.Controle&metodo=getGuiches&parametros={}&token=TOKEN
 Content-Type: application/json; charset=utf-8
 
-{ ... } # retorno
+# [{ value: idGuiche, description: nomeGuiche }, ...]
+```
+
+> O `idGuiche` é o dado que vai ser utilizado para as demais operações e por isto deve ser guardado.
+
+#### proximo
+
+```http
+# $ID_GUICHE é o valor armazenado de um dos objetos retornados na requisição "getGuiches"
+
+POST /AutoAtendimento/ServRotinas?operacao=backing_bean&classe=sgm.server.api.Controle&metodo=proximo&parametros={"idGuiche":$ID_GUICHE}&token=TOKEN
+Content-Type: application/json; charset=utf-8
+
+# verificar ainda, backing_bean incompleto
+
 ```
