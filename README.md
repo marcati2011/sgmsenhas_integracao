@@ -55,5 +55,6 @@ type ServSessaoResult = [ServSessaoUser, ServSessaoToken]
 ### Tipos de integração
 
 - [Totem](SGM/TOTEM.md)
-- [Chamada](SGM/CHAMADA.md)
+- [Chamada de senhas](SGM/CHAMADA.md)
+- [Chamada de pedidos](M5/PEDIDOS.md)
 
